@@ -7,7 +7,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "pushDB": "npx prisma db push",
+    "studioDB": "npx prisma studio"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.4",
