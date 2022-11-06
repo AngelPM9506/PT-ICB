@@ -13,5 +13,6 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  env: {}
 };
 export default config;
