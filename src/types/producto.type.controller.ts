@@ -8,6 +8,15 @@ export interface QueryPost {
     unidad?: string | unknown
 }
 
+export interface QueryUpdate {
+    id: string | undefined,
+    nombre?: string,
+    Descripcion?: string,
+    Inventario?: number,
+    Precio?: number,
+    unidad?: string
+}
+
 export interface ConditionPost {
     data: {
         nombre: string,
@@ -15,5 +24,17 @@ export interface ConditionPost {
         Descripcion: string,
         Inventario: number,
         Precio: number | any
+    }
+}
+export interface ConditionPut {
+    where: {
+        id: string
+    },
+    data: {
+        nombre?: string | any | undefined,
+        slug?: string | any | undefined,
+        Descripcion?: string | any | undefined,
+        Inventario?: number | any | undefined,
+        Precio?: number | any | undefined
     }
 }

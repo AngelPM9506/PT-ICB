@@ -3,11 +3,17 @@
 
 
 export const sendError = (err: Error | any | unknown) => {
-    //console.log(err);
+    console.log(err);
     if (err.code === 'P2002') {
         return {
             status: 'error',
             msg: `Ya existe el rigstro con ese ${err.meta.target.join(',')}`,
+            complete: err
+        }
+    } else if (err.code === 'P2025') {
+        return {
+            status: 'error',
+            msg: `Elemento no encontrado intenta de nuevo`,
             complete: err
         }
     }
