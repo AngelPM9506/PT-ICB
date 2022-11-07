@@ -2,12 +2,13 @@
 import { type Producto } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 import React from 'react'
+import { useCookies } from 'react-cookie'
 import { trpc } from 'src/utils/trpc';
 
 function CardProducto({ producto }: { producto: Producto }) {
     const router = useRouter();
+    const [cookie, setCookie] = useCookies(['carrito']);
     const { mutate: toDetelete } = trpc.productos.deleteProducto.useMutation();
     const { pathname } = router;
     const { id, nombre, slug, Descripcion, Precio } = producto;
@@ -17,6 +18,16 @@ function CardProducto({ producto }: { producto: Producto }) {
         setTimeout(() => {
             router.reload();
         }, 300);
+    }
+
+    const toCarrito = (item: Producto) => {
+        const itemAdded = cookie.carrito ? cookie.carrito.find((pro: Producto) => pro.id === item.id) : null;
+        if (!itemAdded) {
+            setCookie('carrito', cookie.carrito ? [...cookie.carrito, { ...item }] : [{ ...item }]);
+            alert(`${item.nombre}, agregado al carrito con exito`);
+        }else{
+            alert(`${item.nombre}, ya esta en tu carrito`);
+        }
     }
 
     const renderDelete = (path: string) => {
@@ -51,7 +62,9 @@ function CardProducto({ producto }: { producto: Producto }) {
                 </div>
             </Link>
             <div className="flex flex-row-reverse justify-between m-3">
-                <button className='
+                <button
+                    onClick={() => toCarrito(producto)}
+                    className='
                 text-sm
                 text-white
                 bg-green-500 
