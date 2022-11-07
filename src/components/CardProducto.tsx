@@ -17,7 +17,7 @@ function CardProducto({ producto }: { producto: Producto }) {
         console.log(toDetelete({ id }));
         setTimeout(() => {
             router.reload();
-        }, 300);
+        }, 10);
     }
 
     const toCarrito = (item: Producto) => {

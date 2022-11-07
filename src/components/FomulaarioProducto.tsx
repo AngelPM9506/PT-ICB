@@ -153,13 +153,13 @@ const FomulaarioProducto = ({ producto }: { producto?: updateInput }) => {
       <div className='flex flex-row-reverse justify-star mt-3'>
         <input type="submit" value={(router.pathname === '/productos/edit/[slug]') ? 'Actualizar' : 'crear'} className='bg-blue-500 px-2 py-1 w-max rounded shadow shadow-black transition-all duration-150 hover:bg-blue-800 cursor-pointer' onClick={getInputData} />
       </div>
-        <article>
+        {/* <article>
           <p>nombre: {input.nombre}</p>
           <p>Descripcion: {input.Descripcion}</p>
           <p>Inventario: {input.Inventario}</p>
           <p>Precio: {input.Precio}</p>
           <p>unidad: {input.unidad}</p>
-        </article>
+        </article> */}
     </form>
   )
 }
