@@ -37,4 +37,11 @@ export const productosRouter = router({
             const result = await ProductoController.getProducto(slug);
             return result;
         }),
+    deleteProducto: publicProcedure
+        .input(z.object({ id: z.string() }))
+        .mutation(async ({ input }) => {
+            const { id } = input;
+            const result = await ProductoController.deleteProducto(id);
+            return result;
+        })
 });

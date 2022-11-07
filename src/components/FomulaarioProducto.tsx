@@ -3,13 +3,17 @@ import { type ChangeEvent, useState, type SyntheticEvent } from 'react'
 import type { Errors, InputState } from 'src/types/formularioState.type'
 import { trpc } from 'src/utils/trpc'
 
-const FomulaarioProducto = () => {
+const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
+  if (producto) {
+    // eslint-disable-next-line no-var
+    var { nombre, Descripcion, Inventario, Precio, unidad } = producto
+  }
   const initialState: InputState = {
-    nombre: '',
-    Descripcion: '',
-    Inventario: 0,
-    Precio: 0,
-    unidad: 'P'
+    nombre: nombre || '',
+    Descripcion: Descripcion || '',
+    Inventario: Inventario || 0,
+    Precio: Precio || 0,
+    unidad: unidad || 'P'
   }
   const initialErrors: Errors = {}
   const [input, setInput] = useState(initialState);
@@ -74,6 +78,7 @@ const FomulaarioProducto = () => {
             className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500' type="text" name="nombre"
             id="nombre"
             placeholder='Nombre del nuevo Producto'
+            value={input.nombre}
             onChange={getInputData} />
           <p className='text-red-500 text-xs italic'>{errors.nombre}</p>
         </div>
@@ -86,6 +91,7 @@ const FomulaarioProducto = () => {
             type="number"
             name="Inventario"
             id="Inventario"
+            value={input.Inventario}
             onChange={getInputData}
             placeholder='Inventario del nuevo Producto en numero' />
           <p className='text-red-500 text-xs italic'>{errors.Inventario}</p>
@@ -102,6 +108,7 @@ const FomulaarioProducto = () => {
               pattern={`${numberDecimals}`}
               name="Precio"
               id="Precio"
+              value={input.Precio}
               onChange={getInputData}
               placeholder='Precio del nuevo Producto' />
             <select name="unidad" id="unidad"
@@ -121,6 +128,7 @@ const FomulaarioProducto = () => {
             className='bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500'
             name="Descripcion"
             id="Descripcion"
+            value={input.Descripcion}
             onChange={getInputData}
             placeholder='Descripción del nuevo Producto' />
           <p className='text-red-500 text-xs italic'>{errors.Descripcion}</p>
