@@ -14,20 +14,23 @@ export const productosRouter = router({
     newProducto: publicProcedure
         .input(z.object({
             nombre: z.string(),
-            Descripcion: z.string().nullable(),
-            Inventario: z.number(),
-            Precio: z.number(),
-            unidad: z.string().nullable()
+            Descripcion: z.string(),
+            Inventario: z.string(),
+            Precio: z.string(),
+            unidad: z.string()
         }))
-        .query(({ input }) => {
+        .mutation(({ input }) => {
+            console.log(input);
             const query = {
                 nombre: input.nombre,
                 Descripcion: input.Descripcion,
-                Inventario: input.Inventario,
-                Precio: input.Precio,
+                Inventario: parseInt(input.Inventario),
+                Precio: parseFloat(input.Precio),
                 unidad: input.unidad,
             }
             const result = ProductoController.newProducto(query);
-            return result
+            console.log(result);
+
+            return result;
         })
 });
