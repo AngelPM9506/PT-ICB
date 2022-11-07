@@ -37,6 +37,27 @@ export const productosRouter = router({
             const result = await ProductoController.getProducto(slug);
             return result;
         }),
+    updateProducto: publicProcedure
+        .input(z.object({
+            id: z.string(),
+            nombre: z.string(),
+            Descripcion: z.string(),
+            Inventario: z.string(),
+            Precio: z.string(),
+            unidad: z.string()
+        }))
+        .mutation(({ input }) => {
+            const query = {
+                id: input.id,
+                nombre: input.nombre,
+                Descripcion: input.Descripcion,
+                Inventario: parseInt(input.Inventario),
+                Precio: parseFloat(input.Precio),
+                unidad: input.unidad,
+            }
+            const result = ProductoController.updateProducto(query);
+            return result;
+        }),
     deleteProducto: publicProcedure
         .input(z.object({ id: z.string() }))
         .mutation(async ({ input }) => {

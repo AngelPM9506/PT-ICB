@@ -1,13 +1,15 @@
 import { useRouter } from 'next/router'
 import { type ChangeEvent, useState, type SyntheticEvent } from 'react'
-import type { Errors, InputState } from 'src/types/formularioState.type'
+import type { Errors, InputState, updateInput } from 'src/types/formularioState.type'
 import { trpc } from 'src/utils/trpc'
 
-const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
+const FomulaarioProducto = ({ producto }: { producto?: updateInput }) => {
   if (producto) {
     // eslint-disable-next-line no-var
-    var { nombre, Descripcion, Inventario, Precio, unidad } = producto
+    var { id, nombre, Descripcion, Inventario, Precio, unidad } = producto;
   }
+  console.log(producto);
+
   const initialState: InputState = {
     nombre: nombre || '',
     Descripcion: Descripcion || '',
@@ -25,9 +27,18 @@ const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
       router.push(`/productos/${producto.slug}`)
     },
     onError: () => {
-      alert('Error al guardar producto intanta cambiando el nombre');
+      alert('Error al guardar producto intanta cambiando el nombre y tener un Inventario y precio mayor a 0');
     }
   });
+  const { mutate: updateProduto } = trpc.productos.updateProducto.useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSuccess: (producto: any) => {
+      router.push(`/productos/${producto.slug}`)
+    },
+    onError: () => {
+      alert('Error al actualizar producto intanta cambiando el nombre y tener un Inventario y precio mayor a 0');
+    }
+  })
   const onlyLetersOrNumbers = /^[Á-Źa-z0-9\s]+$/i;
   const onlyNumbers = /^([0-9])+$/;
   const numberDecimals = /^\d*(\.\d+)?$/;
@@ -64,7 +75,12 @@ const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
     const { nombre, Descripcion, Inventario, Precio, unidad } = input;
     const query = { nombre, Descripcion, Inventario: Inventario.toString(), Precio: Precio.toString(), unidad };
     if (JSON.stringify(errors) === '{}') {
-      newProducto(query);
+      console.log(router);
+      if (router.pathname === '/productos/edit/[slug]') {
+        updateProduto({ ...query, id })
+      } else {
+        newProducto(query);
+      }
     }
   }
 
@@ -115,7 +131,7 @@ const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
               className=' basis-12 ml-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500'
               onChange={getInputData}>
               <option value="P">$</option>
-              <option value="C">₵</option>
+              <option value="C" selected ={(router.pathname === '/productos/edit/[slug]') ? true : false}>₵</option>
             </select>
           </div>
           <p className='text-red-500 text-xs italic'>{errors.Precio}</p>
@@ -134,8 +150,9 @@ const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
           <p className='text-red-500 text-xs italic'>{errors.Descripcion}</p>
         </div>
       </div>
-      <div className='flex flex-col justify-start mt-3'>
-        <input type="submit" value="Crear" className='bg-blue-500 px-2 py-1 w-max rounded shadow shadow-black transition-all duration-150 hover:bg-blue-800 cursor-pointer' onClick={getInputData} />
+      <div className='flex flex-row-reverse justify-star mt-3'>
+        <input type="submit" value={(router.pathname === '/productos/edit/[slug]') ? 'Actualizar' : 'crear'} className='bg-blue-500 px-2 py-1 w-max rounded shadow shadow-black transition-all duration-150 hover:bg-blue-800 cursor-pointer' onClick={getInputData} />
+      </div>
         <article>
           <p>nombre: {input.nombre}</p>
           <p>Descripcion: {input.Descripcion}</p>
@@ -143,7 +160,6 @@ const FomulaarioProducto = ({ producto }: { producto?: InputState }) => {
           <p>Precio: {input.Precio}</p>
           <p>unidad: {input.unidad}</p>
         </article>
-      </div>
     </form>
   )
 }
