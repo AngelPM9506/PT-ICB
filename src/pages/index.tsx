@@ -21,7 +21,7 @@ const Home: NextPage = () => {
           <p className="pb-5">Hola esta es una prueba tecnica realizada para PT-ICB espero que les guste o me puedan dejar un comentario en GitHub</p>
           <ListarProductos limit={6} />
           <article className="flex flex-row-reverse mt-5 justify-start">
-            <Link href={'/productos'} className='bg-blue-500 p-3 w-max rounded-2xl shadow shadow-black transition-all duration-150 hover:bg-blue-800'>Ver todos...</Link>
+            <Link href={'/productos'} className='bg-blue-500 p-3 w-max text-white rounded shadow shadow-black transition-all duration-150 hover:bg-blue-700'>Ver todos...</Link>
           </article>
         </section>
       </main>

@@ -20,7 +20,6 @@ export const productosRouter = router({
             unidad: z.string()
         }))
         .mutation(({ input }) => {
-            console.log(input);
             const query = {
                 nombre: input.nombre,
                 Descripcion: input.Descripcion,
@@ -29,8 +28,13 @@ export const productosRouter = router({
                 unidad: input.unidad,
             }
             const result = ProductoController.newProducto(query);
-            console.log(result);
-
             return result;
-        })
+        }),
+    getProducto: publicProcedure
+        .input(z.object({ slug: z.string().nullish() }).nullish())
+        .query(async ({ input }) => {
+            const slug = input?.slug;
+            const result = await ProductoController.getProducto(slug);
+            return result;
+        }),
 });

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react'
 
 function CardProducto({ producto }: { producto: Producto }) {
-    const { nombre, slug, Descripcion, Precio } = producto;
+    const {id, nombre, slug, Descripcion, Precio } = producto;
     return (
         <article className='bg-gray-200 m-2 rounded-xl shadow-xl'>
             <Link href={`/productos/${slug}`} >
@@ -15,17 +15,32 @@ function CardProducto({ producto }: { producto: Producto }) {
                     <p>${Precio / 100}</p>
                 </div>
             </Link>
-            <div className="flex flex-row-reverse justify-start m-3">
-                <button className='
+            <div className="flex flex-row justify-between m-3">
+
+            <button className='
                 text-sm
-                 bg-green-400 
+                text-white
+                 bg-red-500 
                  p-2 
-                 rounded-xl 
+                 rounded 
                  shadow 
                  transition-all 
                  duration-300 
                  shadow-slate-700
-                 hover:bg-green-700 hover:text-white'>
+                 hover:bg-red-700'>
+                    Eliminar
+                </button>
+                <button className='
+                text-sm
+                text-white
+                 bg-green-500 
+                 p-2 
+                 rounded 
+                 shadow 
+                 transition-all 
+                 duration-300 
+                 shadow-slate-700
+                 hover:bg-green-700'>
                     Agregar al carrito
                 </button>
             </div>
