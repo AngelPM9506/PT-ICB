@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
+//const { NEXTAUTH_SECRET } = process.env;
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -24,7 +25,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
     // ...add more providers here
-  ],
+  ]
 };
 
 export default NextAuth(authOptions);

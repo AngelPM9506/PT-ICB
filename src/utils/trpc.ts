@@ -1,5 +1,6 @@
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
+// import { createReactQueryHooks } from "@trpc/react-query";
 import { type GetInferenceHelpers } from "@trpc/server";
 import superjson from "superjson";
 
@@ -10,6 +11,8 @@ const getBaseUrl = () => {
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
+
+// export const trpc = createReactQueryHooks<AppRouter>();
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {
