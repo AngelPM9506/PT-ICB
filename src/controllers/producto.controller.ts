@@ -4,9 +4,11 @@ import prismaClient from "src/utils/prismaClient";
 const { producto } = prismaClient;
 
 const ProductoController = {
-    getProductos: async () => {
+    getProductos: async (limit?: number | null) => {
+        const condition: { take?: number | undefined } = {};
+        condition.take = limit ? limit : undefined;
         try {
-            const result = await producto.findMany();
+            const result = await producto.findMany(condition);
             return result;
         } catch (error) {
             return error;
@@ -14,11 +16,11 @@ const ProductoController = {
     },
     newProducto: async (query: QueryPost) => {
         let { nombre, Descripcion, Inventario, Precio, unidad } = query;
-        if (!nombre || !Descripcion || !Inventario || !Precio || !unidad) {
+        if (!nombre || !Descripcion || !Inventario || !Precio) {
             throw new Error("Datos no Validos intenta de nuevo");
         }
         const slug = `${nombre.toString().trim().split(' ').join('').toUpperCase()}-PRODUCTO`;
-        Precio = unidad === 'P' ? (parseFloat(Precio.toString()) * 100) : parseFloat(Precio.toString());
+        Precio = unidad !== 'C' ? (parseFloat(Precio.toString()) * 100) : parseFloat(Precio.toString());
         const datos: ConditionPost = {
             data: {
                 nombre: nombre.toString().trim(),
