@@ -37,8 +37,9 @@ const ProductoController = {
             return error;
         }
     },
-    getProducto: async (id: string | undefined) => {
-        const result = await producto.findUnique({ where: { id } });
+    getProducto: async (slug: string | undefined | null) => {
+        if (!slug) throw new Error("Es obligatorio enviar todos los datos");
+        const result = await producto.findUnique({ where: { slug } });
         if (result === null) {
             throw new Error('Error al encontrar producto');
         }

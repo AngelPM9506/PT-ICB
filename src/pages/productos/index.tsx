@@ -9,7 +9,7 @@ export default function index() {
       <section>
         <p className='pb-5'> Aquí puedes observar todos los productos</p>
         <article className="flex mt-5 justify-start">
-          <Link href={'/productos/create'} className='bg-blue-500 p-3 w-max rounded-2xl shadow shadow-black transition-all duration-150 hover:bg-blue-800'>Nuevo producto</Link>
+          <Link href={'/productos/create'} className='bg-blue-500 p-3 w-max text-white rounded shadow shadow-black transition-all duration-150 hover:bg-blue-700'>Nuevo producto</Link>
         </article>
         <ListarProductos />
       </section>

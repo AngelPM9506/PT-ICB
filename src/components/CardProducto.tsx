@@ -1,11 +1,57 @@
 
 import { type Producto } from '@prisma/client';
 import Link from 'next/link';
-
+import { useRouter } from 'next/router';
 import React from 'react'
+import { useCookies } from 'react-cookie'
+import { trpc } from 'src/utils/trpc';
 
 function CardProducto({ producto }: { producto: Producto }) {
-    const { nombre, slug, Descripcion, Precio } = producto;
+    const router = useRouter();
+    const [cookie, setCookie] = useCookies(['carrito']);
+    const { mutate: toDetelete } = trpc.productos.deleteProducto.useMutation();
+    const { pathname } = router;
+    const { id, nombre, slug, Descripcion, Precio } = producto;
+
+    const deleteProducto = (id: string) => {
+        console.log(toDetelete({ id }));
+        setTimeout(() => {
+            router.reload();
+        }, 300);
+    }
+
+    const toCarrito = (item: Producto) => {
+        const itemAdded = cookie.carrito ? cookie.carrito.find((pro: Producto) => pro.id === item.id) : null;
+        if (!itemAdded) {
+            setCookie('carrito', cookie.carrito ? [...cookie.carrito, { ...item }] : [{ ...item }]);
+            alert(`${item.nombre}, agregado al carrito con exito`);
+        }else{
+            alert(`${item.nombre}, ya esta en tu carrito`);
+        }
+    }
+
+    const renderDelete = (path: string) => {
+        if (path === '/productos') {
+            return (
+                <button
+                    onClick={() => deleteProducto(id)}
+                    className='
+                text-sm
+                text-white
+                 bg-red-500 
+                 p-2 
+                 rounded 
+                 shadow 
+                 transition-all 
+                 duration-300 
+                 shadow-slate-700
+                 hover:bg-red-700'>
+                    Eliminar
+                </button>
+            );
+        }
+        return null;
+    }
     return (
         <article className='bg-gray-200 m-2 rounded-xl shadow-xl'>
             <Link href={`/productos/${slug}`} >
@@ -15,19 +61,23 @@ function CardProducto({ producto }: { producto: Producto }) {
                     <p>${Precio / 100}</p>
                 </div>
             </Link>
-            <div className="flex flex-row-reverse justify-start m-3">
-                <button className='
+            <div className="flex flex-row-reverse justify-between m-3">
+                <button
+                    onClick={() => toCarrito(producto)}
+                    className='
                 text-sm
-                 bg-green-400 
-                 p-2 
-                 rounded-xl 
-                 shadow 
-                 transition-all 
-                 duration-300 
-                 shadow-slate-700
-                 hover:bg-green-700 hover:text-white'>
+                text-white
+                bg-green-500 
+                p-2 
+                rounded 
+                shadow 
+                transition-all 
+                duration-300 
+                shadow-slate-700
+                hover:bg-green-700'>
                     Agregar al carrito
                 </button>
+                {renderDelete(pathname)}
             </div>
         </article>
     )

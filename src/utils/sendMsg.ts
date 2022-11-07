@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-
-
 export const sendError = (err: Error | any | unknown) => {
     console.log(err);
     if (err.code === 'P2002') {
